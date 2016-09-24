@@ -1,6 +1,6 @@
 # Aframe-soccer
 
-Showcasing full body tracking in VR.
+Showcasing full body tracking in VR [https://vatelier.net/MyDemo/soccer/](https://vatelier.net/MyDemo/soccer/).
 
 ![Kicking it](https://aframe.io/images/awoa/football-vr.gif)
 
