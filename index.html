@@ -1,0 +1,94 @@
+  <head>
+    <meta charset="utf-8">
+    <title>Full body soccer using Aframe</title>
+    <meta name="description" content="Full body soccer - A-Frame">
+    <script src="js/aframe.js"></script>
+    <script src="components/aabb-collider.js"></script>
+    <script src="components/grab.js"></script>
+    <script src="components/ground.js"></script>
+    <script src="shaders/skyGradient.js"></script>
+    <script src="components/aframe-extras.min.js"></script>
+  </head>
+  <body>
+    <a-scene fog="color: #bc483e; near: 0; far: 65;" physics='gravity: -9.8; debug: false; restitution: 0.5"' antialias='true'>
+      <a-assets>
+        <a-mixin id="cube"
+                 geometry="primitive: box; height: 0.30; width: 0.30; depth: 0.30"
+                 material="color: #EF2D5E;"></a-mixin>
+        <a-mixin id="cube-collided"
+                 material="color: #F2E646;"></a-mixin>
+        <a-mixin id="cube-grabbed"
+                 material="color: #F2E646;"></a-mixin>
+	<a-asset-item id="hand-obj" src="./assets/models/hand.obj"></a-asset-item>
+	<a-asset-item id="foot-obj" src="./assets/models/foot.obj"></a-asset-item>
+	<a-asset-item id="stadium-obj" src="./assets/models/stadium.obj"></a-asset-item>
+	<a-asset-item id="self" src="./assets/models/self.dae"></a-asset-item>
+
+	<img id="field" src="assets/textures/field.jpg">
+	<img id="ball" src="assets/textures/ball.jpg">
+	<img id="net" src="assets/textures/net.png">
+      </a-assets>
+   
+      <!-- Full body order might vary so make sure to check yours BEFORE you strap anything on your feet -->
+      <a-entity tracked-controls="controller: 0; id: OpenVR Gamepad" obj-model="obj: #hand-obj;" scale="0.005 0.005 0.005"
+      static-body sphere-collider="objects: .throwable" grab></a-entity>
+      <a-entity tracked-controls="controller: 1; id: OpenVR Gamepad" obj-model="obj: #hand-obj;" scale="0.005 0.005 0.005"
+      static-body sphere-collider="objects: .throwable" grab></a-entity>
+      <a-entity tracked-controls="controller: 2; id: OpenVR Gamepad" obj-model="obj: #foot-obj;" scale="0.1 0.1 0.1"
+      static-body sphere-collider="objects: .throwable" grab></a-entity>
+      <a-entity tracked-controls="controller: 3; id: OpenVR Gamepad" obj-model="obj: #foot-obj;" scale="0.1 0.1 0.1"
+      static-body sphere-collider="objects: .throwable" grab></a-entity>
+
+      <!-- Soccer -->
+      <a-entity obj-model="obj: #stadium-obj;" scale="0.5 0.5 0.5" position="0 -3.6 20" rotation="0 90 0"></a-entity>
+
+      <a-sphere id="ball" class="throwable" dynamic-body position="0 3 -0.2" radius="0.15" src="#ball"></a-sphere>
+      <a-entity position="0 0 -3" scale="1.5 1.5 1.5">
+	      <a-entity id="goalie"  height="1.8" radius="0.10" color="brown" static-body="shape: box;" collada-model="#self" scale="0.2 0.2 0.2" >
+			<a-animation attribute="position" from="-0.7 0.2 -0.5" to="0.7 0.2 -0.5" repeat="indefinite" direction="alternate" dur="5000"></a-animation>
+			<a-animation attribute="rotation" from="0 120 0" to="0 90 0" repeat="indefinite" direction="alternate" dur="5000"></a-animation>
+	      </a-entity>
+	      <a-cylinder id="goalTop" static-body position="0 1.5 -1" height="2" radius="0.05" color="white" rotation="90 90 0"></a-cylinder>
+	      <a-cylinder static-body position="-1 0.5 -1" height="2" radius="0.05" color="white"></a-cylinder>
+	      <a-cylinder static-body position="1 0.5 -1" height="2" radius="0.05" color="white"></a-cylinder>
+	      <a-cylinder rotation="30 0 0" static-body position="-1 0.5 -1.5" height="2" radius="0.05" color="white"></a-cylinder>
+	      <a-cylinder rotation="30 0 0" static-body position="1 0.5 -1.5" height="2" radius="0.05" color="white"></a-cylinder>
+	      <a-plane height="1.7" width="2" src="#net" material="repeat: 2 2;" transparent="true" rotation="30 0 0" position="0 0.7 -1.5"></a-plane>
+      </a-entity>
+
+      <a-box id="grass" static-body position="0 0.1 14.33" width="40" height="0.05" depth="20" src="#field" rotation="0 90 0" material="shader: flat; "></a-box>
+
+      <!-- A-Frame cubes -->
+      <a-entity position="-4 0 -6" rotation="0 45 0" scale="2 2 2">
+        <a-entity class="cube" mixin="cube" position="0.30 1.65 0"></a-entity>
+        <a-entity class="cube" mixin="cube" position="0 1.95 0"></a-entity>
+        <a-entity class="cube" mixin="cube" position="-0.30 1.65 0"></a-entity>
+
+        <a-entity class="cube" mixin="cube" position="0.60 1.35 0"></a-entity>
+        <a-entity class="cube" mixin="cube" position="0.60 1.05 0"></a-entity>
+        <a-entity class="cube" mixin="cube" position="0.60 0.75 0"></a-entity>
+        <a-entity class="cube" mixin="cube" position="0.60 0.45 0"></a-entity>
+        <a-entity class="cube" mixin="cube" position="0.60 0.15 0"></a-entity>
+
+        <a-entity class="cube" mixin="cube" position="0.30 0.75 0"></a-entity>
+        <a-entity class="cube" mixin="cube" position="0 0.75 0"></a-entity>
+        <a-entity class="cube" mixin="cube" position="-0.30 0.75 0"></a-entity>
+
+        <a-entity class="cube" mixin="cube" position="-0.60 1.35 0"></a-entity>
+        <a-entity class="cube" mixin="cube" position="-0.60 1.05 0"></a-entity>
+        <a-entity class="cube" mixin="cube" position="-0.60 0.75 0"></a-entity>
+        <a-entity class="cube" mixin="cube" position="-0.60 0.45 0"></a-entity>
+        <a-entity class="cube" mixin="cube" position="-0.60 0.15 0"></a-entity>
+
+        <!-- Environment -->
+        <a-entity id="sky"
+                  geometry="primitive: sphere; radius: 65;"
+                  material="shader: skyGradient; colorBottom: #0041C2; colorTop: #95B9C7; side: back"></a-entity>
+         <a-entity visible="false" ground scale="1 0.2 1" position="0 -2 0"></a-entity>
+         <a-entity light="type: point; color: #f4f4f4; intensity: 0.2; distance: 0" position="8 10 18"></a-entity>
+         <a-entity light="type: point; color: #f4f4f4; intensity: 0.6; distance: 0" position="-8 10 -18"></a-entity>
+         <a-entity light="type: ambient; color: #f4f4f4; intensity: 0.4;" position="-8 10 -18"></a-entity>
+      </a-entity>
+    </a-scene>
+  </body>
+</html>
